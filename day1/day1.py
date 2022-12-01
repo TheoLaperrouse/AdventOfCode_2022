@@ -23,8 +23,8 @@ def part2(input_numbers):
 
 if __name__ == "__main__":
     for path in sys.argv[1:]:
-        print(f"\n{path}:")
         input_text = pathlib.Path(path).read_text().strip()
-
         numbers = parse(input_text)
-        print(part1(numbers))
+        print(path)
+        print(f'Part 1 : {part1(numbers)}')
+        print(f'Part 2 : {part2(numbers)}')
