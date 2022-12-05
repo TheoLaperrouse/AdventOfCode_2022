@@ -17,8 +17,7 @@ def part1(input_numbers):
 def part2(input_numbers):
     """Solve part 2."""
     input_numbers.sort()
-    input_numbers.reverse()
-    return sum(input_numbers[0:3])
+    return sum(input_numbers[::-1][0:3])
 
 
 if __name__ == "__main__":
