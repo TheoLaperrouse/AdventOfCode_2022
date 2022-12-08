@@ -37,7 +37,7 @@ def build_path_string(path_array):
     if len(path_array) == 1:
         return '/'
     for directory in path_array:
-        if string_path == '':
+        if not string_path:
             string_path = directory
         elif string_path[-1] == '/':
             string_path += directory
