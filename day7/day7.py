@@ -13,7 +13,7 @@ def directory_path_size(input_commands):
             pass
         elif "$ cd" in command:
             path_command = command.split()[2]
-            if ".." == path_command:
+            if path_command == '..':
                 current_folder = current_path.pop()
                 str_path = build_path_string(current_path)
             else:
@@ -55,14 +55,13 @@ def parse(puzzle_input):
 def part1(input_commands):
     """Solve part 1."""
     dirs = directory_path_size(input_commands)
-    dir_sizes = [size for _, size in dirs.items() if size <= 100000]
+    dir_sizes = [size for size in dirs.values() if size <= 100000]
     return sum(dir_sizes)
 
 
 def part2(input_commands):
     """Solve part 2."""
     dirs = directory_path_size(input_commands)
-
     free_space = 70000000 - dirs['/']
     needed_space = 30000000 - free_space
     folder_sizes = [size for size in dirs.values() if size >
