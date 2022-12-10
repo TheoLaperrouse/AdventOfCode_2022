@@ -55,7 +55,7 @@ def part2(cycle_inputs):
 if __name__ == "__main__":
     for path in sys.argv[1:]:
         input_text = pathlib.Path(path).read_text(encoding='utf-8').strip()
-        move_inputs = parse(input_text)
+        assembler_input = parse(input_text)
         print(path)
-        print(f'Part 1 : {part1(move_inputs)}')
-        print(f'Part 2 : {part2(move_inputs)}')
+        print(f'Part 1 : {part1(assembler_input)}')
+        print(f'Part 2 : {part2(assembler_input)}')

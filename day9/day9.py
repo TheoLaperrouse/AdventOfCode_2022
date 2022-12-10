@@ -3,6 +3,7 @@ import sys
 
 
 def move_dir(position, move):
+    """Move a position according to a move"""
     match move:
         case 'R':
             position[0] += 1
@@ -23,28 +24,28 @@ def parse(text_input):
 def part1(moves_inputs):
     """Solve part 1."""
     visited_positions = []
-    last_position_H = [0, 0]
-    position_H = [0, 0]
-    position_T = [-1, 0]
+    position_h = [0, 0]
+    position_t = [-1, 0]
     last_dist = 0
     for move in moves_inputs:
         for _ in range(0, move[1]):
-            position_H = move_dir(position_H, move[0])
-            dist = abs(position_H[0] - position_T[0]) + \
-                abs(position_H[1] - position_T[1])
+            position_h = move_dir(position_h, move[0])
+            dist = abs(position_h[0] - position_t[0]) + \
+                abs(position_h[1] - position_t[1])
             # Diagonale
-            if abs(position_H[0] - position_T[0]) + abs(position_H[1] - position_T[1]) == 2\
-                    and abs(position_H[0] - position_T[0]) > 0 and abs(position_H[1] - position_T[1]) > 0:
-                position_T = last_position_H[:]
-                visited_positions.append(position_T)
+            if abs(position_h[0] - position_t[0]) + abs(position_h[1] - position_t[1]) == 2\
+                    and abs(position_h[0] - position_t[0]) > 0 \
+                        and abs(position_h[1] - position_t[1]) > 0:
+                position_t = last_position_h[:]
+                visited_positions.append(position_t)
             # H revient vers T (T bouge pas)
             elif last_dist > dist:
                 pass
             # Comportement normal
             else:
-                position_T = move_dir(position_T, move[0])
-                visited_positions.append(position_T[:])
-            last_position_H = position_H[:]
+                position_t = move_dir(position_t, move[0])
+                visited_positions.append(position_t[:])
+            last_position_h = position_h[:]
             last_dist = dist
     known_positions = []
     for position in visited_positions:
@@ -53,7 +54,7 @@ def part1(moves_inputs):
     return len(known_positions)
 
 
-def part2(moves_inputs):
+def part2():
     """Solve part 2."""
     return 0
 
@@ -64,4 +65,4 @@ if __name__ == "__main__":
         move_inputs = parse(input_text)
         print(path)
         print(f'Part 1 : {part1(move_inputs)}')
-        print(f'Part 2 : {part2(move_inputs)}')
+        print(f'Part 2 : {part2()}')

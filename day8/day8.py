@@ -13,7 +13,7 @@ def parse(puzzle_input):
 
 def visible(value_tree, list_value):
     """Return if a tree is visible or not according to a list of value"""
-    return all([val < value_tree or len(list_value) == 0 for val in list_value])
+    return all(val < value_tree or len(list_value) == 0 for val in list_value)
 
 
 def tree_score(value_tree, list_value):
@@ -35,8 +35,8 @@ def part1(forest):
             column = [forest[index][index_column]
                       for index in range(0, size)]
             conditions = [
-                visible(tree, forest[index_row][0:index_column]),  # Left
-                visible(tree, forest[index_row][index_column + 1:]),  # Right
+                visible(tree, row_forest[0:index_column]),  # Left
+                visible(tree, row_forest[index_column + 1:]),  # Right
                 visible(tree, column[:index_row]),  # Up
                 visible(tree, column[index_row+1:]),  # Down
             ]
@@ -53,8 +53,8 @@ def part2(forest):
             column = [forest[index][index_column]
                       for index in range(0, size)]
             scores.append(
-                tree_score(tree, forest[index_row][0:index_column][::-1]) *
-                tree_score(tree, forest[index_row][index_column + 1:]) *
+                tree_score(tree, row_forest[0:index_column][::-1]) *
+                tree_score(tree, row_forest[index_column + 1:]) *
                 tree_score(tree, column[:index_row][::-1]) *
                 tree_score(tree, column[index_row+1:])
             )
