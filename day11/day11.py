@@ -4,7 +4,7 @@ import re
 import copy
 import math
 
-def operation(worry_level, oper):
+def operate(worry_level, oper, div):
     """Apply the operation to the worry level"""
     if '+' in oper:
         to_add = oper.split('+ ')[1]
@@ -12,18 +12,7 @@ def operation(worry_level, oper):
     if '*' in oper:
         to_mul = oper.split('* ')[1]
         worry_level *= int(to_mul) if 'old' not in to_mul else worry_level
-    return int(worry_level / 3)
-
-def operation2(worry_level, oper):
-    """Apply the operation to the worry level"""
-    if '+' in oper:
-        to_add = oper.split('+ ')[1]
-        worry_level += int(to_add) if 'old' not in to_add else worry_level
-    if '*' in oper:
-        to_mul = oper.split('* ')[1]
-        worry_level *= int(to_mul) if 'old' not in to_mul else worry_level
-    return int(worry_level)
-
+    return int(worry_level / 3 if div else worry_level)
 
 def parse(text_input):
     """Parse input."""
@@ -46,8 +35,7 @@ def part1(monkey_inputs):
         for monkey in monkeys:
             for  object_monkey in monkey['list_object']:
                 monkey['inspected'] += 1
-                object_monkey = operation(
-                    object_monkey, monkey['operation'])
+                object_monkey = operate(object_monkey, monkey['operation'], True)
                 if object_monkey % monkey['divisor'] == 0:
                     monkeys[monkey['true']]['list_object'].append(object_monkey)
                 else:
@@ -59,13 +47,13 @@ def part1(monkey_inputs):
 
 def part2(monkey_inputs):
     """Solve part 2."""
-    lcm = math.lcm(monkey['divisor'] for monkey in monkey_inputs)
+    lcm = math.lcm(*[monkey['divisor'] for monkey in monkey_inputs])
     monkeys = copy.deepcopy(monkey_inputs)
     for _ in range(0, 10000):
         for monkey in monkeys:
             for  object_monkey in monkey['list_object']:
                 monkey['inspected'] += 1
-                object_monkey = operation2(object_monkey, monkey['operation']) % lcm
+                object_monkey = operate(object_monkey, monkey['operation'], False) % lcm
                 if object_monkey % monkey['divisor'] == 0:
                     monkeys[monkey['true']]['list_object'].append(object_monkey)
                 else:
