@@ -2,17 +2,27 @@ import pathlib
 import sys
 import re
 import copy
+import math
 
-
-def operation(worry_level, op):
-    if '+' in op:
-        to_add = op.split('+ ')[1]
+def operation(worry_level, oper):
+    """Apply the operation to the worry level"""
+    if '+' in oper:
+        to_add = oper.split('+ ')[1]
         worry_level += int(to_add) if 'old' not in to_add else worry_level
-    if '*' in op:
-        to_mul = op.split('* ')[1]
+    if '*' in oper:
+        to_mul = oper.split('* ')[1]
         worry_level *= int(to_mul) if 'old' not in to_mul else worry_level
-    print(worry_level / 3)
     return int(worry_level / 3)
+
+def operation2(worry_level, oper):
+    """Apply the operation to the worry level"""
+    if '+' in oper:
+        to_add = oper.split('+ ')[1]
+        worry_level += int(to_add) if 'old' not in to_add else worry_level
+    if '*' in oper:
+        to_mul = oper.split('* ')[1]
+        worry_level *= int(to_mul) if 'old' not in to_mul else worry_level
+    return int(worry_level)
 
 
 def parse(text_input):
@@ -34,23 +44,36 @@ def part1(monkey_inputs):
     monkeys = copy.deepcopy(monkey_inputs)
     for _ in range(0, 20):
         for monkey in monkeys:
-            print(monkey)
-            for index, object in enumerate(monkey['list_object']):
+            for  object_monkey in monkey['list_object']:
                 monkey['inspected'] += 1
-                object = operation(
-                    object, monkey['operation'])
-                if object % monkey['divisor']:
-                    monkeys[monkey['true']]['list_object'].append(object)
+                object_monkey = operation(
+                    object_monkey, monkey['operation'])
+                if object_monkey % monkey['divisor'] == 0:
+                    monkeys[monkey['true']]['list_object'].append(object_monkey)
                 else:
-                    monkeys[monkey['false']]['list_object'].append(object)
-                monkey['list_object'].pop(index)
-    print(monkeys)
-    return 0
+                    monkeys[monkey['false']]['list_object'].append(object_monkey)
+                monkey['list_object'] = monkey['list_object'][1:]
+    monkeys.sort(key=lambda m: m['inspected'], reverse=True)
+    return monkeys[0]['inspected'] * monkeys[1]['inspected']
 
 
-def part2(cycle_inputs):
+def part2(monkey_inputs):
     """Solve part 2."""
-    return 0
+    lcm = math.lcm(monkey['divisor'] for monkey in monkey_inputs)
+    monkeys = copy.deepcopy(monkey_inputs)
+    for _ in range(0, 10000):
+        for monkey in monkeys:
+            for  object_monkey in monkey['list_object']:
+                monkey['inspected'] += 1
+                object_monkey = operation2(object_monkey, monkey['operation']) % lcm
+                if object_monkey % monkey['divisor'] == 0:
+                    monkeys[monkey['true']]['list_object'].append(object_monkey)
+                else:
+                    monkeys[monkey['false']]['list_object'].append(object_monkey)
+                monkey['list_object'] = monkey['list_object'][1:]
+    monkeys.sort(key=lambda m: m['inspected'], reverse=True)
+    return monkeys[0]['inspected'] * monkeys[1]['inspected']
+
 
 
 if __name__ == "__main__":
